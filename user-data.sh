@@ -8,7 +8,12 @@ wget -O lxc-profile-k8s.yaml https://raw.githubusercontent.com/usandeepc/lxd-pre
 cat lxc-profile-k8s.yaml | lxc profile edit k8s
 lxc launch images:centos/7 kmaster --profile k8s
 lxc launch images:centos/7 kworker1 --profile k8s
+lxc launch images:centos/7 kworker2 --profile k8s
 wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/bootstrap-kube.sh
+sleep 60
 cat bootstrap-kube.sh | lxc exec kmaster bash
 cat bootstrap-kube.sh | lxc exec kworker1 bash
-history | cut -c 8-
+cat bootstrap-kube.sh | lxc exec kworker2 bash
+mkdir /home/ubuntu/.kube/
+lxc file pull kmaster/root/.kube/config ~/.kube/config
+sudo snap install kubectl --classic
