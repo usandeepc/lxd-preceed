@@ -17,7 +17,7 @@ cat bootstrap-kube.sh | lxc exec kworker2 bash
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 sudo snap install kubectl --classic
-sudo apt-get install ipvsadm
-sudo ipvsadm -A -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -s rr
-sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker1 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
-sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker2 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
+#sudo apt-get install ipvsadm
+#sudo ipvsadm -A -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -s rr
+#sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker1 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
+#sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker2 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
