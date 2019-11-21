@@ -21,3 +21,4 @@ sudo snap install kubectl --classic
 #sudo ipvsadm -A -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -s rr
 #sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker1 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
 #sudo ipvsadm -a -t `dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`:80 -r `lxc exec kworker2 -- ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1` -m
+curl -L https://git.io/get_helm.sh | bash
