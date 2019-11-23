@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+spec:
+  rules:
+  - host: sso.finpro.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: keycloak-http
+          servicePort: 80
