@@ -29,6 +29,7 @@ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifes
 #sudo ipvsadm -a -t 172.31.43.77:80 -r 10.36.211.220 -m
 
 helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
+helm repo add codecentric https://codecentric.github.io/helm-charts
 
 #IPVS proxy to Metallb -- eg 
 #sudo ipvsadm -A -t 172.31.43.77:80 -s rr
