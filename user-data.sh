@@ -20,7 +20,7 @@ sudo snap install kubectl --classic
 #sudo apt-get install ipvsadm
 curl -L https://git.io/get_helm.sh | bash
 wget -O helm.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/helm.yaml
-wget -O https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
+wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
 kubectl apply -f helm.yaml
 helm init --service-account=tiller --history-max 300
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
