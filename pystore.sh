@@ -8,6 +8,7 @@ pip3 install virtualenv
 sudo apt-get install libsnappy-dev
 virtualenv algo
 source algo/bin/activate
-pip install pystore
 pip install 'fsspec>=0.3.3'
 pip install dask[dataframe] --upgrade
+pip install pystore
+
