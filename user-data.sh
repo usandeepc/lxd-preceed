@@ -34,3 +34,4 @@ helm repo add codecentric https://codecentric.github.io/helm-charts
 #IPVS proxy to Metallb -- eg 
 #sudo ipvsadm -A -t 172.31.43.77:80 -s rr
 #sudo ipvsadm -a -t 172.31.43.77:80 -r 10.36.211.220 -m
+#/sbin/ifconfig ens3 | grep 'inet' | grep broadcast
