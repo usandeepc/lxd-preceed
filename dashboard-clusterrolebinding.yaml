@@ -12,3 +12,6 @@ subjects:
 - kind: ServiceAccount
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
+#kubectl get clusterrolebinding
+#kubectl delete clusterrolebinding kubernetes-dashboard
+#kubectl apply -f dashboard-permissions.yaml -n kubernetes-dashboard
