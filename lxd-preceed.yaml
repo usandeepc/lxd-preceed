@@ -1,8 +1,9 @@
 config: {}
 networks:
 - config:
-    ipv4.address: auto
-    ipv6.address: auto
+     ipv4.address: 10.235.228.1/24
+     ipv4.nat: "true"
+     ipv6.address: auto
   description: ""
   managed: false
   name: lxdbr0
