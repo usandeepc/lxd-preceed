@@ -26,16 +26,16 @@ helm init --service-account=tiller --history-max 300
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 
 #Configure Metallb (ConfigMap)
-#sudo ipvsadm -a -t 172.31.43.77:80 -r 10.36.211.220 -m
+#sudo ipvsadm -A -t 172.31.33.231:443 -s rr
+#sudo ipvsadm -a -t 172.31.33.231:443 -r 10.235.228.240 -m
+#sudo ipvsadm -A -t 172.31.33.231:80 -s rr
+#sudo ipvsadm -a -t 172.31.33.231:80 -r 10.235.228.240 -m
+#curl https://ipinfo.io/ip
 
 helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 helm repo add codecentric https://codecentric.github.io/helm-charts
 
-#IPVS proxy to Metallb -- eg 
-#sudo ipvsadm -A -t 172.31.43.77:80 -s rr
-#sudo ipvsadm -a -t 172.31.43.77:80 -r 10.36.211.220 -m
-#/sbin/ifconfig ens3 | grep 'inet' | grep broadcast
-#curl https://ipinfo.io/ip
+
 #Cert-Manager
 kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.12/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
