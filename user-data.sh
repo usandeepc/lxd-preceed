@@ -24,6 +24,8 @@ wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/mas
 kubectl apply -f helm.yaml
 helm init --service-account=tiller --history-max 300
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+sleep 20
+helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
 #Configure Metallb (ConfigMap)
 #export $PVT_IP=xx.xxx.xx.x
@@ -33,7 +35,7 @@ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifes
 #sudo ipvsadm -a -t $PVT_IP:80 -r 10.235.228.240 -m
 #curl https://ipinfo.io/ip
 
-helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
+
 helm repo add codecentric https://codecentric.github.io/helm-charts
 
 
