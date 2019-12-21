@@ -17,7 +17,7 @@ cat bootstrap-kube.sh | lxc exec kworker2 bash
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 sudo snap install kubectl --classic
-#sudo apt-get install ipvsadm
+sudo apt-get install ipvsadm
 curl -L https://git.io/get_helm.sh | bash
 wget -O helm.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/helm.yaml
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
@@ -26,10 +26,11 @@ helm init --service-account=tiller --history-max 300
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 
 #Configure Metallb (ConfigMap)
-#sudo ipvsadm -A -t 172.31.33.231:443 -s rr
-#sudo ipvsadm -a -t 172.31.33.231:443 -r 10.235.228.240 -m
-#sudo ipvsadm -A -t 172.31.33.231:80 -s rr
-#sudo ipvsadm -a -t 172.31.33.231:80 -r 10.235.228.240 -m
+#export $PVT_IP=xx.xxx.xx.x
+#sudo ipvsadm -A -t $PVT_IP:443 -s rr
+#sudo ipvsadm -a -t $PVT_IP:443 -r 10.235.228.240 -m
+#sudo ipvsadm -A -t $PVT_IP:80 -s rr
+#sudo ipvsadm -a -t $PVT_IP:80 -r 10.235.228.240 -m
 #curl https://ipinfo.io/ip
 
 helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
