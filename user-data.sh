@@ -1,8 +1,9 @@
+#Install and configure Lxd
 sudo apt-get install lxd
 sudo gpasswd -a ubuntu lxd
 wget -O preseed.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/lxd-preceed.yaml
 cat preseed.yaml | lxd init --preseed
-lxc list
+#lxc list
 lxc profile create k8s
 wget -O lxc-profile-k8s.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/lxc-profile-k8s.yaml
 cat lxc-profile-k8s.yaml | lxc profile edit k8s
@@ -14,21 +15,34 @@ sleep 60
 cat bootstrap-kube.sh | lxc exec kmaster bash
 cat bootstrap-kube.sh | lxc exec kworker1 bash
 cat bootstrap-kube.sh | lxc exec kworker2 bash
+
+#Adding KubeConfig
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
+
+#kubectl install 
 sudo snap install kubectl --classic
+
+#Helm 3 install 
 wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+
 #Configure Metallb (ConfigMap)
 #kubectl apply -f metallb.yaml
-sudo apt-get install ipvsadm -y
-sleep 20
+
+
 #curl -L https://git.io/get_helm.sh | bash
 #wget -O helm.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/helm.yaml
 #kubectl apply -f helm.yaml
 #helm init --service-account=tiller --history-max 300
-#helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
+
+#Install ipvsadm
+sudo apt-get install ipvsadm -y
+sleep 20
+
+#Install nginx-ingress 
+#helm install stable/nginx-ingress nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
 #Configure ipvsadm
 #export $PVT_IP=xx.xxx.xx.x
@@ -38,8 +52,8 @@ sleep 20
 #sudo ipvsadm -a -t $PVT_IP:80 -r 10.235.228.240 -m
 #curl https://ipinfo.io/ip
 
-
-helm repo add codecentric https://codecentric.github.io/helm-charts
+#Keycloak
+#helm repo add codecentric https://codecentric.github.io/helm-charts
 
 
 #Cert-Manager
