@@ -17,7 +17,7 @@ cat bootstrap-kube.sh | lxc exec kworker2 bash
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 sudo snap install kubectl --classic
-wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz &&  mv linux-amd64/helm /usr/bin/
+wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 sudo apt-get install ipvsadm -y
