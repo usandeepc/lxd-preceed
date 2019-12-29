@@ -25,7 +25,7 @@ sudo snap install kubectl --classic
 
 #Helm 3 install 
 wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
-
+helm repo add stable https://kubernetes-charts.storage.googleapis.com &&  helm repo update
 #Metallb install
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 
