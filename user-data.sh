@@ -45,7 +45,7 @@ sudo apt-get install ipvsadm -y
 sleep 20
 
 #Install nginx-ingress 
-#helm install stable/nginx-ingress nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
+#helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
 #Configure ipvsadm
 #export $PVT_IP=xx.xxx.xx.x
