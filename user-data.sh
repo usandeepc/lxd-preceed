@@ -20,6 +20,8 @@ sudo snap install kubectl --classic
 wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+#Configure Metallb (ConfigMap)
+#kubectl apply -f metallb.yaml
 sudo apt-get install ipvsadm -y
 sleep 20
 #curl -L https://git.io/get_helm.sh | bash
@@ -28,7 +30,7 @@ sleep 20
 #helm init --service-account=tiller --history-max 300
 #helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
-#Configure Metallb (ConfigMap)
+#Configure ipvsadm
 #export $PVT_IP=xx.xxx.xx.x
 #sudo ipvsadm -A -t $PVT_IP:443 -s rr
 #sudo ipvsadm -a -t $PVT_IP:443 -r 10.235.228.240 -m
