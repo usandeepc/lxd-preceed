@@ -17,15 +17,16 @@ cat bootstrap-kube.sh | lxc exec kworker2 bash
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 sudo snap install kubectl --classic
-sudo apt-get install ipvsadm
-curl -L https://git.io/get_helm.sh | bash
-wget -O helm.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/helm.yaml
+wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz &&  mv linux-amd64/helm /usr/bin/
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
-kubectl apply -f helm.yaml
-helm init --service-account=tiller --history-max 300
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+sudo apt-get install ipvsadm -y
 sleep 20
-helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
+#curl -L https://git.io/get_helm.sh | bash
+#wget -O helm.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/helm.yaml
+#kubectl apply -f helm.yaml
+#helm init --service-account=tiller --history-max 300
+#helm install stable/nginx-ingress --name nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
 #Configure Metallb (ConfigMap)
 #export $PVT_IP=xx.xxx.xx.x
@@ -43,4 +44,4 @@ helm repo add codecentric https://codecentric.github.io/helm-charts
 kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.12/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
-helm install --name cert-manager --namespace cert-manager --version v0.12.0 jetstack/cert-manager
+helm install cert-manager --namespace cert-manager jetstack/cert-manager
