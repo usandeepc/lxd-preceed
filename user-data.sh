@@ -45,6 +45,7 @@ sudo apt-get install ipvsadm -y
 sleep 20
 
 #Install nginx-ingress 
+#kubectl create ns nginx-ingress
 #helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true --namespace nginx-ingress
 
 #Configure ipvsadm
