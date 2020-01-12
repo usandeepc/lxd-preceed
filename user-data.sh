@@ -10,11 +10,13 @@ cat lxc-profile-k8s.yaml | lxc profile edit k8s
 lxc launch images:centos/7 kmaster --profile k8s
 lxc launch images:centos/7 kworker1 --profile k8s
 lxc launch images:centos/7 kworker2 --profile k8s
+lxc launch images:centos/7 kworker3 --profile k8s
 wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/bootstrap-kube.sh
 sleep 60
 cat bootstrap-kube.sh | lxc exec kmaster bash
 cat bootstrap-kube.sh | lxc exec kworker1 bash
 cat bootstrap-kube.sh | lxc exec kworker2 bash
+cat bootstrap-kube.sh | lxc exec kworker3 bash
 
 #Adding KubeConfig
 mkdir /home/ubuntu/.kube/
