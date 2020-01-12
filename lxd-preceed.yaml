@@ -1,7 +1,7 @@
 config: {}
 networks:
 - config:
-    ipv4.address: 10.235.228.0/24
+#    ipv4.address: 10.235.228.0/24
     ipv4.nat: "true"
     ipv6.address: auto
   description: ""
