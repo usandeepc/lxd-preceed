@@ -20,8 +20,9 @@ cat bootstrap-kube.sh | lxc exec kworker2 bash
 mkdir /home/ubuntu/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 
-#kubectl install 
+#kubectl install and enable bash auto-completeion feature for kubectl
 sudo snap install kubectl --classic
+sudo kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/ && source /etc/bash_completion.d/kubectl
 
 #Helm 3 install 
 wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
