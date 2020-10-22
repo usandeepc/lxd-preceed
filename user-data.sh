@@ -1,30 +1,32 @@
+#!/bin/bash
 #Install and configure Lxd
 #Required Ubuntu:20.04
 sudo snap install lxd
-sudo gpasswd -a ubuntu lxd
 lxc launch images:centos/7 kmaster --vm
 lxc launch images:centos/7 kworker1 --vm
-lxc launch images:centos/7 kworker2 --vm
-lxc launch images:centos/7 kworker3 --vm
+#lxc launch images:centos/7 kworker2 --vm
+#lxc launch images:centos/7 kworker3 --vm
 wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/lxd-virtualmachine/bootstrap-kube.sh
 #Delay is required to initialize lxd-agent on vms
-sleep 120
+sleep 150
 lxc exec kmaster -- hostnamectl set-hostname kmaster
 lxc exec kworker1 -- hostnamectl set-hostname kworker1
-lxc exec kworker2 -- hostnamectl set-hostname kworker2
-lxc exec kworker3 -- hostnamectl set-hostname kworker3
+#lxc exec kworker2 -- hostnamectl set-hostname kworker2
+#lxc exec kworker3 -- hostnamectl set-hostname kworker3
 cat bootstrap-kube.sh | lxc exec kmaster bash
 cat bootstrap-kube.sh | lxc exec kworker1 bash
-cat bootstrap-kube.sh | lxc exec kworker2 bash
-cat bootstrap-kube.sh | lxc exec kworker3 bash
+#cat bootstrap-kube.sh | lxc exec kworker2 bash
+#cat bootstrap-kube.sh | lxc exec kworker3 bash
 
 #Adding KubeConfig
-mkdir /home/ubuntu/.kube/
+mkdir ~/.kube/
 lxc file pull kmaster/root/.kube/config ~/.kube/config
 
 #kubectl install and enable bash auto-completeion feature for kubectl
 sudo snap install kubectl --classic
-sudo kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/ && source /etc/bash_completion.d/kubectl
+sudo kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/
+sudo /bin/bash /etc/bash_completion.d/kubectl
+
 
 #Helm 3 install 
 wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
