@@ -49,7 +49,7 @@ echo "kubeadmin" | passwd --stdin root >/dev/null 2>&1
 
 # Install additional required packages
 echo "[TASK 8] Install additional packages"
-yum install -y -q which net-tools sudo sshpass less >/dev/null 2>&1
+yum install -y -q which net-tools sudo sshpass >/dev/null 2>&1
 
 
 #######################################
@@ -62,7 +62,7 @@ then
   # Initialize Kubernetes
   echo "[TASK 9] Initialize Kubernetes Cluster"
   kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all >> /root/kubeinit.log 2>&1
-
+  sleep 60
   # Copy Kube admin config
   echo "[TASK 10] Copy kube admin config to root user .kube directory"
   mkdir /root/.kube
@@ -74,7 +74,8 @@ then
 
   # Generate Cluster join command
   echo "[TASK 12] Generate and save cluster join command to /joincluster.sh"
-  joinCommand=$(kubeadm token create --print-join-command 2>/dev/null) 
+  joinCommand=$(kubeadm token create --print-join-command 2>/dev/null)
+  sleep 60 
   echo "$joinCommand --ignore-preflight-errors=all" > /joincluster.sh
 
 fi
