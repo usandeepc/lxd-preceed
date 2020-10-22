@@ -6,7 +6,7 @@ lxc launch images:centos/7 kmaster --vm
 lxc launch images:centos/7 kworker1 --vm
 lxc launch images:centos/7 kworker2 --vm
 lxc launch images:centos/7 kworker3 --vm
-wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/bootstrap-kube.sh
+wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/lxd-virtualmachine/bootstrap-kube.sh
 #Delay is required to initialize lxd-agent on vms
 sleep 120
 lxc exec kmaster -- hostnamectl set-hostname kmaster
