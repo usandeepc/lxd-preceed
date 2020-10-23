@@ -4,31 +4,39 @@
 echo "[TASK 1] Install docker container engine"
 yum install -y -q yum-utils device-mapper-persistent-data lvm2 > /dev/null 2>&1
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo > /dev/null 2>&1
-yum install -y -q docker-ce-18.06.0.ce-3.el7 >/dev/null 2>&1
+#yum install -y -q docker-ce-18.06.0.ce-3.el7 >/dev/null 2>&1
+yum install -y -q docker-ce docker-ce-cli containerd.io > /dev/null 2>&1
 #Install on all nodes for nfs-dynamic provisoning
 yum install -y -q nfs-utils >/dev/null 2>&1
 
 # Enable docker service
 echo "[TASK 2] Enable and start docker service"
 systemctl enable docker >/dev/null 2>&1
-systemctl start docker
+systemctl start docker >/dev/null 2>&1
+#Prerequisites for kubeadm
+cat >>/etc/sysctl.d/k8s.conf<<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system >/dev/null 2>&1
 
 # Add yum repo file for Kubernetes
 echo "[TASK 3] Add yum repo file for kubernetes"
 cat >>/etc/yum.repos.d/kubernetes.repo<<EOF
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-repo_gpgcheck=0
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
-        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
 EOF
-
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 # Install Kubernetes
 echo "[TASK 4] Install Kubernetes (kubeadm, kubelet and kubectl)"
-yum install -y -q kubeadm-1.16.0 kubelet-1.16.0 kubectl-1.16.0 >/dev/null 2>&1
+yum install -y -q kubelet kubeadm kubectl --disableexcludes=kubernetes>/dev/null 2>&1
 
 # Start and Enable kubelet service
 echo "[TASK 5] Enable and start kubelet service"
@@ -90,6 +98,8 @@ then
   # Join worker nodes to the Kubernetes cluster
   echo "[TASK 9] Join node to Kubernetes Cluster"
   sshpass -p "kubeadmin" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no kmaster.lxd:/joincluster.sh /joincluster.sh 2>/tmp/joincluster.log
+  sleep 10
   bash /joincluster.sh >> /tmp/joincluster.log 2>&1
+  sleep 10
 
 fi
