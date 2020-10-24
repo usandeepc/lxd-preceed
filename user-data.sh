@@ -29,11 +29,15 @@ sudo /bin/bash /etc/bash_completion.d/kubectl
 
 
 #Helm 3 install 
-wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
+wget https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz && tar -xvzf helm-v3.3.4-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
 helm repo add stable https://kubernetes-charts.storage.googleapis.com &&  helm repo update
 
 #Metallb install
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.4/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.4/manifests/metallb.yaml
+# On first install only
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
 
 #Configure Metallb (ConfigMap)
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
@@ -66,6 +70,5 @@ sleep 20
 
 
 #Cert-Manager
-
 kubectl create namespace cert-manager
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.0.3 --set installCRDs=true
