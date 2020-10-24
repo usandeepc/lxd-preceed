@@ -2,10 +2,10 @@
 #Install and configure Lxd
 #Required Ubuntu:20.04
 sudo snap install lxd
-lxc launch images:centos/7 kmaster --vm
-lxc launch images:centos/7 kworker1 --vm
-#lxc launch images:centos/7 kworker2 --vm
-#lxc launch images:centos/7 kworker3 --vm
+lxc launch images:centos/7 kmaster --vm -c limits.memory=2GB
+lxc launch images:centos/7 kworker1 --vm -c limits.memory=2GB
+#lxc launch images:centos/7 kworker2 --vm -c limits.memory=2GB
+#lxc launch images:centos/7 kworker3 --vm -c limits.memory=2GB
 wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/lxd-virtualmachine/bootstrap-kube.sh
 #Delay is required to initialize lxd-agent on vms
 sleep 150
