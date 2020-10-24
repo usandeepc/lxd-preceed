@@ -12,7 +12,7 @@ lxc launch images:centos/7 kworker1 --profile k8s
 lxc launch images:centos/7 kworker2 --profile k8s
 lxc launch images:centos/7 kworker3 --profile k8s
 wget -O bootstrap-kube.sh https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/bootstrap-kube.sh
-sleep 60
+sleep 30
 cat bootstrap-kube.sh | lxc exec kmaster bash
 cat bootstrap-kube.sh | lxc exec kworker1 bash
 cat bootstrap-kube.sh | lxc exec kworker2 bash
@@ -27,11 +27,15 @@ sudo snap install kubectl --classic
 sudo kubectl completion bash > kubectl && sudo mv kubectl /etc/bash_completion.d/ && source /etc/bash_completion.d/kubectl
 
 #Helm 3 install 
-wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz && tar -xvzf helm-v3.0.2-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
+wget https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz && tar -xvzf helm-v3.3.4-linux-amd64.tar.gz && sudo mv linux-amd64/helm /usr/bin/
 helm repo add stable https://kubernetes-charts.storage.googleapis.com &&  helm repo update
 
 #Metallb install
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.4/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.4/manifests/metallb.yaml
+# On first install only
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
 
 #Configure Metallb (ConfigMap)
 wget -O metallb.yaml https://raw.githubusercontent.com/usandeepc/lxd-preceed/master/metallb.yaml
@@ -64,7 +68,6 @@ sleep 20
 
 
 #Cert-Manager
-kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.12/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
 helm install cert-manager --namespace cert-manager jetstack/cert-manager
